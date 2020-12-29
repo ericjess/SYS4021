@@ -18,8 +18,8 @@
 #*****************************************
 # Load Data
 #*****************************************
-sourcedir <- "D:/GoogleDrive/Julie_SYS4021/2020/R Code"
-datadir <- "D:/GoogleDrive/Julie_SYS4021/2020/Data/Spam"
+sourcedir <- "C:/Users/etj3pp/Desktop/SYS4021/Source"
+datadir <- "C:/Users/etj3pp/Desktop/SYS4021/Data/Spam"
 
 setwd(sourcedir)
 spam <- read.table(paste(datadir,"/Spam.txt", sep=""), sep = " ", header = F)
@@ -46,9 +46,10 @@ library(ggbiplot)
 dim(spam)
 summary(spam)
 
-# Which variable is the response variable?
-table(spam$V58)
+# no header, so variables are assigned "V1, V2, ..., V58"
 
+# Which variable is the response variable?
+table(spam$V58) # spam (1) or ham (0)
 
 # What proportion is spam?
 sum(spam[,58])/length(spam[,58])
@@ -65,6 +66,7 @@ png('Image1.png',width = 1920,height = 1080)
 uva.pairs(spam[,c(1:10,58)])
 dev.off()
 
+# Log transformation of first 10 predictors, have to add a constant since some are zero
 png('Image2.png',width = 1920,height = 1080)
 uva.pairs(log(spam[,c(1:10,58)]+.00001))
 dev.off()
@@ -85,6 +87,8 @@ for(i in 1:9)
 }
 
 ggarrange(V1,V2,V3,V4,V5,V6,V7,V8,V9,ncol=3,nrow=3)
+
+# V3 is definitely useful
 
 
 # Obtain boxplots with variables 49-57 vs. the response.
@@ -122,6 +126,9 @@ for(i in 1:9)
 ggarrange(V1,V2,V3,V4,V5,V6,V7,V8,V9,ncol=3,nrow=3)
 dev.off()
 
+# V3 and V5 are good predictors
+
+
 #2. Obtain box plots log transforms of variables 49-57 with variable 58.
 png('Image5.png',width = 1920,height = 1080)
 for(i in 49:57)
@@ -132,6 +139,8 @@ for(i in 49:57)
 }
 ggarrange(V49,V50,V51,V52,V53,V54,V55,V56,V57,ncol=3,nrow=3)
 dev.off()
+
+# V52, V53, V55, V56, and V57 are good predictors
 
 
 #****************************************************
@@ -147,13 +156,17 @@ spam.pca = princomp(spam[,1:57], cor = T)
 biplot(spam.pca)
 ggbiplot(spam.pca, varname.size = 5, labels=row(spam)[,1])
 
+# There is a pattern, so more than two PCs are needed to explain variance
+# Perhaps one cluster is spam and one is ham
+
+
 # What is the outlier?
 barplot(spam.pca$loadings[,2])
 summary(spam[,which(spam.pca$loadings[,2] > 0.2)])
 spam[1754,which(spam.pca$loadings[,2] > 0.2)]
 boxplot(spam$V56)
 
-# remove observation 1754
+# remove observation 1754 -- it's a huge outlier for V56
 spam.pca = princomp(spam[-1754,1:57], cor = T)
 
 # Obtain the biplot.fact of your principal components.
@@ -162,6 +175,7 @@ biplot.fact(spam.pca, spam[-1754,58])
 legend(-30, 10, legend = c("Spam", "Ham"), pch = c(18, 19), col = c("red", "blue"))
 
 biplot.fact.gg(spam.pca, spam[-1754,58], labels=c("Ham","Spam"))
+
 
 #3. Obtain the principal components for the log transform of variables 1-57. 
 #   Look at the biplot and explain what you see.

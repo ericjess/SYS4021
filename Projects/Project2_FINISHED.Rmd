@@ -1,0 +1,418 @@
+---
+title: "Project 2"
+author: "Thomas Gresham, Eric Jess, Harrison Mazanec"
+date: "12/3/2020"
+pledge: "On our honor, we have neither given or recieved aid on this assignment."
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+require("knitr")
+sourcedir <- "C:/Users/etj3pp/Desktop/SYS4021/Source"
+datadir <- "C:/Users/etj3pp/Desktop/SYS4021/Data/AirQualityUCI"
+opts_knit$set(root.dir = sourcedir)
+
+# load libraries
+library(ggplot2)
+library(ggfortify)
+library(ggpubr)
+
+library(forecast)
+library(imputeTS)
+library(lubridate)
+library(tidyverse)
+library(mtsdi)
+library(tseries)
+
+library("car")
+```
+
+# Load data and impute missing values
+```{r load data}
+setwd(datadir)
+
+airquality = read.csv('AirQualityUCI.csv')
+
+# replace -200 with NA
+airquality[airquality == -200] <- NA
+
+# convert integer type to numeric
+intcols = c(4,5,7,8,9,10,11,12)
+for(i in 1:length(intcols)){
+  airquality[,intcols[i]] <- as.numeric(airquality[,intcols[i]])
+}
+
+setwd(sourcedir)
+
+# create new data frame with just NO2 and impute missing values
+AQdata = airquality["NO2.GT."]
+AQdata = na_interpolation(AQdata)
+
+# aggregate to daily maxima for model building
+dailyAQ <- aggregate(AQdata, by=list(as.Date(airquality[,1],"%m/%d/%Y")), FUN=max)
+
+# create time series of NO2
+orig.NO2.ts <- ts(dailyAQ[,2])
+
+# remove last 7 days of observations
+dailyAQ.new <- dailyAQ[1:(dim(dailyAQ)[1]-7),]
+NO2.ts <- ts(dailyAQ.new[,2])
+
+```
+
+Part 1A - Seasonal Components
+```{r 1A}
+
+# plot time series data
+autoplot(NO2.ts, ylab = "Maximum Daily Nitrogen Dioxide Concentration", xlab = "Day")
+
+# periodogram of data
+pg.NO2 <- spec.pgram(log(NO2.ts), spans = 9, demean=T, log='no')
+
+# peak of periodogram
+max.omega.NO2 <- pg.NO2$freq[which(pg.NO2$spec==max(pg.NO2$spec))]
+max.omega.NO2 #0.00520833
+
+# period of data 
+1/max.omega.NO2 #192 days
+
+# sort spectrum from largest to smallest and find index
+sorted.spec <- sort(pg.NO2$spec, decreasing=T, index.return=T)
+names(sorted.spec)
+
+# corresponding periods (omegas = frequences, Ts = periods)
+sorted.omegas <- pg.NO2$freq[sorted.spec$ix]
+sorted.Ts <- 1/pg.NO2$freq[sorted.spec$ix]
+
+# look at first 20
+sorted.omegas[1:20]
+sorted.Ts[1:20]
+
+# No clear period... maybe NO2 depends on day of the week (travel, work commute, etc.)
+
+# Model seasonality based on days of the week (like we did for ham in TS1)
+t <- c(seq(1:dim(dailyAQ.new)[1]))
+
+# March 10, 2004 is a Wednesday (first day in data frame)
+Day <- rep(NA, length(NO2.ts))
+Day[which((t %% 7)    == 1)] <- "W" #wednesday
+Day[which((t %% 7)    == 2)] <- "R" #thursday
+Day[which((t %% 7)    == 3)] <- "F" #friday
+Day[which((t %% 7)    == 4)] <- "S" #saturday
+Day[which((t %% 7)    == 5)] <- "U" #sunday
+Day[which((t %% 7)    == 6)] <- "M" #monday
+Day[which((t %% 7)    == 0)] <- "T" #tuesday
+Day <- as.factor(Day)
+
+contrasts(Day) # Friday is the base case
+
+Day <- relevel(as.factor(Day), ref = "U") # make Sunday the base case
+
+# build seasonality model with Day as the only predictor
+NO2.season <- lm(NO2.ts ~ Day)
+summary(NO2.season)
+
+## In order to determine whether there were any seasonal components, we first plotted all the time series data. To check if the seasonality could be capture with trigonometric functions, we constructed a periodogram. However, the periodogram revealed no clear or intuitive periods (the max omega was 192 days). After considering how NO2 emissions primarily come from vehicles, we decided to account for day of the week. All coefficients were statistically significant from the base case (Sunday) except for Saturday. Based on this result, we have modeled the seasonal component using Day as a dummy variable.
+```
+
+Part 1B - Trends
+```{r 1B}
+
+# build trend model with time as the only predictor
+NO2.trend <- lm(NO2.ts ~ t)
+summary(NO2.trend) # time is significant at the 0.001 level
+
+# plot model with trend
+ggplot(dailyAQ.new, aes(x = Group.1,y = NO2.GT.)) + geom_line() +
+  stat_smooth(method="lm",col="red") + xlab("") + ylab("Daily Maximum Nitrogen Dioxide Levels")
+
+## There is a trend in the data, but trend alone does not appear to be sufficient in explaining N02 levels.
+
+# diagnostic plots for NO2.trend
+autoplot(NO2.trend, labels.id = NULL)
+
+# There are issues with the Gaussian assumption and non-constant variance
+
+# combine trend and season models
+NO2.trend.season <- lm(NO2.ts ~ t + Day)
+summary(NO2.trend.season)
+
+# plot NO2.trend.season model
+ggplot(dailyAQ.new, aes(x = Group.1,y = NO2.GT.)) + geom_line() + 
+  geom_line(aes(x=Group.1,y=NO2.trend.season$fitted.values),color="red") +
+  xlab("") + ylab("Daily Maximum Nitrogen Levels")
+
+## Accounting for trend and seasonality appears to be a better fit.
+
+# diagnostic plots for NO2.trend.season
+autoplot(NO2.trend.season, labels.id = NULL)
+
+# There are still issues with the Gaussian assumption and non-constant variance
+
+# compare models
+AIC(NO2.season)       #4123.301
+AIC(NO2.trend)        #3002.334
+AIC(NO2.trend.season) #3976.623
+
+## NO2.trend.season is the best of these three. We will use this model as a starting point moving forward.
+
+```
+
+Part 1C - Autoregressive and Moving Average Components
+```{r 1C}
+
+# get the residuals from the NO2.trend.season model
+e.ts.NO2 <- ts(NO2.trend.season$residuals)
+
+# plot the residuals
+autoplot(e.ts.NO2)
+
+# ACF and PACF of the residuals
+NO2.acf <- ggAcf(e.ts.NO2)
+NO2.pacf <- ggPacf(e.ts.NO2)
+
+# Plot ACF and PACF side by side
+ggarrange(NO2.acf,NO2.pacf ,nrow=2,ncol=1)
+
+# The ACF decays sinusoidally
+# The PACF cuts off after 2 lags (p = 2)
+
+# construct an autoregressive model, AR(2)
+NO2.ar2 <- arima(e.ts.NO2, order=c(2,0,0))
+summary(NO2.ar2)
+
+# construct a moving average model, MA(1)
+NO2.ma1 <- arima(e.ts.NO2, order=c(0,0,1))
+summary(NO2.ma1)
+
+# construct an ARMA model, ARMA(2,1)
+NO2.arma21 <- arima(e.ts.NO2, order=c(2,0,1))
+summary(NO2.arma21)
+
+# automatically select models using the arima() function
+NO2.auto <- auto.arima(e.ts.NO2, approximation=FALSE)
+summary(NO2.auto)
+
+```
+
+Part 1D - Model Assessment
+```{r 1D}
+
+## Assessment of seasonal model (accounts for day of the week)
+AIC(NO2.season)$adj.r.squared #0.04851873
+AIC(NO2.season) #4123.301
+
+# construct seasonal model with trigonometric functions for comparison
+NO2.trigseason <- lm(NO2.ts ~ sin(2*pi*t*max.omega.NO2) + cos(2*pi*t*max.omega.NO2))
+AIC(NO2.trigseason)$adj.r.squared #0.07473563
+AIC(NO2.trigseason) #4108.625
+
+# NO2.trigseason is slightly better than NO2.season, however both are inadequate
+
+# season diagnostics
+autoplot(NO2.season) #non-Gaussian tails
+autoplot(NO2.trigseason) #non-Gaussian tails
+library(olsrr)
+ols_test_breusch_pagan(NO2.season) #nonconstant variance (P < 0.05)
+ols_test_breusch_pagan(NO2.trigseason) #nonconstant variance (P < 0.0001)
+
+## Assessment of trend model
+AIC(NO2.trend)$adj.r.squared #0.2966398
+AIC(NO2.trend) #4002.334
+
+# trend season model from 1B
+AIC(NO2.trend.season)$adj.r.squared #0.3522569
+AIC(NO2.trend.season) #3976.623
+
+anova(NO2.trend, NO2.trend.season) #season component (Day) adds predictive value (P < 0.0001)
+
+# construct trend season model with trigonometric functions for comparison
+NO2.trend.trigseason <- lm(NO2.ts ~ t + sin(2*pi*t*max.omega.NO2) + cos(2*pi*t*max.omega.NO2))
+AIC(NO2.trend.trigseason)$adj.r.squared #0.3041614
+AIC(NO2.trend.trigseason) #4000.19
+
+anova(NO2.trend, NO2.trend.trigseason) #season component (trig functions) adds some predictive value (P < 0.05)
+
+# NO2.trend.season (Day) is better than NO2.trend.trigseason (trig function) based on adjusted R-squared and AIC. The seasonal component of the Day model is also more intuitive than the trigonometric model, which uses a seemingly arbitrary period (192 days).
+
+# trend diagnostics
+autoplot(NO2.trend.season) #non-Gaussian tails
+ols_test_breusch_pagan(NO2.trend.season) #nonconstant variance (P = 0.00017)
+
+e.ts.NO2 <- ts(NO2.trend.season$residuals)
+Box.test(e.ts.NO2, type="Ljung-Box") #residuals are NOT independent (P < 2.2e-16)
+
+## Assessment of autoregressive and moving average models
+
+# compare 4 models based on AIC
+AIC(NO2.ar2) #AIC=3727.311
+AIC(NO2.ma1) #AIC=3814.921
+AIC(NO2.arma21) #AIC=3725.118
+AIC(NO2.auto) #AIC=3723.118
+
+# assess residuals vs. fitted
+model1 = ggplot() + geom_point(aes(x=fitted(NO2.ar2), y=NO2.ar2$residuals)) + ggtitle("AR2")
+model2 = ggplot() + geom_point(aes(x=fitted(NO2.ma1), y=NO2.ma1$residuals)) + ggtitle("MA1")
+model3 = ggplot() + geom_point(aes(x=fitted(NO2.arma21), y=NO2.arma21$residuals)) + ggtitle("ARMA21")
+model4 = ggplot() + geom_point(aes(x=fitted(NO2.auto), y=NO2.auto$residuals)) + ggtitle("Auto")
+
+ggarrange(model1, model2, model3, model4, ncol=2, nrow=2) #residuals appear homoscedastic with zero mean
+
+# assess normality of residuals
+model1 = qplot(sample=NO2.ar2$residuals) + stat_qq_line(color="red") + ggtitle("AR2")
+model2 = qplot(sample=NO2.ma1$residuals) + stat_qq_line(color="red") + ggtitle("MA1")
+model3 = qplot(sample=NO2.arma21$residuals) + stat_qq_line(color="red") + ggtitle("ARMA21")
+model4 = qplot(sample=NO2.auto$residuals) + stat_qq_line(color="red") + ggtitle("Auto")
+
+ggarrange(model1, model2, model3, model4, ncol=2, nrow=2) #residuals show non-Gaussian tails
+
+# Plot diagnostics for independence of residuals using tsdiag()
+ggtsdiag(NO2.ar2,gof.lag=20)
+Box.test(NO2.ar2$residuals, type="Ljung-Box") #residuals independent
+
+ggtsdiag(NO2.ma1,gof.lag=20)
+Box.test(NO2.ma1$residuals, type="Ljung-Box") #residuals NOT independent (P < 0.001)
+
+ggtsdiag(NO2.arma21,gof.lag=20)
+Box.test(NO2.arma21$residuals, type="Ljung-Box") #residuals independent
+
+ggtsdiag(NO2.auto,gof.lag=20)
+Box.test(NO2.auto$residuals, type="Ljung-Box") #residuals independent
+
+# Plot the autocorrelation (ACF) and partial autocorrelation (PACF) of the residuals of NO2.auto
+NO2.auto.resid.acf <- ggAcf(NO2.auto$residuals)
+NO2.auto.resid.pacf <- ggPacf(NO2.auto$residuals)
+ggarrange(NO2.auto.resid.acf,NO2.auto.resid.pacf,nrow=2,ncol=1)
+
+## NO2.auto, the selected model, accounts for correlation in the residuals. Aside from the non-Gaussian upper tail, the diagnostics indicate no remaining issues.
+
+```
+
+Part 1E - Forecasting
+```{r 1E}
+
+# forecast the next 7 days of NO2 level residuals
+NO2.auto.forecast <- forecast(NO2.auto, h=7)
+plot(NO2.auto.forecast)
+
+## Prediction performance
+
+# The test period in days
+next.7days.time <- c(length(orig.NO2.ts)-6):(length(orig.NO2.ts))
+next.7days.Day <- c("T","W","R","F","S","U","M") #last 7 days start on a Tuesday
+
+# The test data frame
+next.7days <- data.frame(t = next.7days.time,
+                         Day = next.7days.Day,
+                         NO2 = orig.NO2.ts[next.7days.time])
+
+# The actual time series for the test period
+next.7days.ts <- ts(next.7days$NO2)
+
+# Prediction for the next 7 days by NO2.auto
+E_Y.pred <- predict(NO2.trend.season, newdata=next.7days)
+e_t.pred <- forecast(NO2.auto, h=7)
+next.7days.prediction <- E_Y.pred + e_t.pred$mean
+
+# MSE
+mean((next.7days.prediction - next.7days$NO2)^2) #561.5447
+
+# plot actual values and predicted values
+plot(ts(next.7days$NO2),type='o',ylim=c(0,400))
+lines(ts(next.7days.prediction),col='red',type='o')
+lines(1:7, E_Y.pred + e_t.pred$lower[,2], col = "red", lty = "dashed")
+lines(1:7, E_Y.pred + e_t.pred$upper[,2], col = "red", lty = "dashed")
+legend(1,60, legend = c("Actual", "Predicted"), lwd = 2, col = c("black", "red"))
+
+```
+
+# Part 2 - Simulating Univariate Time Series Models
+```{r 2A}
+# Simulate 6 months of daily max NO2 concentration with the chosen model
+# Days in 6 months: 7*26 
+set.seed(1)
+auto.sim <- arima.sim(n=365, list(ar=c(NO2.auto$coef[1],NO2.auto$coef[2]),
+                                      ma=c(NO2.auto$coef[3])),
+                        sd=sqrt(NO2.auto$sigma2))
+
+# Create time variable for next 6 months
+next.oneyear.time <- c(1:(365))
+
+# Create new linear model of max NO2 concentrations vs. the day and the seasonality
+NO2.trend.seasonal<-lm(NO2.ts[next.oneyear.time]~next.oneyear.time+ sin(2*pi*next.oneyear.time/7) + cos(2*pi*next.oneyear.time/7))
+summary(NO2.trend.seasonal)
+
+# Create test data frame
+# The test data frame
+next.oneyear <- data.frame(t = next.oneyear.time,Day = next.7days.Day, NO2 = NO2.ts[next.oneyear.time])
+
+# The actual time series for the test period
+next.oneyear.ts <- NO2.ts[next.oneyear.time]
+
+next.oneyear.ts <- ts(next.oneyear$NO2)
+
+# Simulate 6 months
+EY.pred <- predict(NO2.trend.seasonal, newdata=next.oneyear)
+et.pred  <- forecast(NO2.auto, h=182)
+next.oneyear.prediction <- EY.pred + et.pred$mean
+
+# Plot actual values and predicted values (Observations and Simulation)
+plot(ts(next.oneyear$NO2),type='o',ylim=c(0,400))
+lines(ts(next.oneyear.prediction),col='red',type='o')
+lines(1:182, EY.pred + et.pred$lower[,2], col = "red", lty = "dashed")
+lines(1:182, EY.pred + et.pred$upper[,2], col = "red", lty = "dashed")
+legend(1,60, legend = c("Actual", "Predicted"), lwd = 2, col = c("black", "red"))
+```
+
+```{r 2B} 
+# Compare linear models of simulations and observations
+# Create linear model of trends and seasonality from simulation
+Sim.trend.seasonal <- lm(next.oneyear.prediction~next.oneyear.time+ sin(2*pi*next.oneyear.time/7) + cos(2*pi*next.oneyear.time/7))
+
+# Compare coefficients of time of Simulation model and Observations model
+summary(Sim.trend.seasonal) # -0.0686
+summary(NO2.trend.seasonal) # -0.1176
+# The percentage difference is 53.6%
+```
+
+```{r 2C}
+# Comparing periodograms of simulations and observations
+# periodogram of simulations
+pg.Sim <- spec.pgram(log(next.oneyear.prediction), spans = 9, demean=T, log='no')
+
+# periodogram of observations
+pg.Obs <- spec.pgram(log(next.oneyear.ts), spans = 9, demean=T, log='no')
+
+# The main spike in the periodogram of the observation model is shifted over by 
+# around 1.2 in that of the simulation model
+```
+
+```{r 2D}
+# Comparing mean and variance of the simulations and observations
+mean(next.oneyear.prediction) # 134.01
+mean(next.oneyear.ts) # 135.73
+# The mean of the simulation is 1.72 microg/m^3 smaller than the observations
+var(next.oneyear.prediction) # 179.34
+var(next.oneyear.ts) # 1332.15
+# The variance of the simulation is much smaller than the observations
+```
+
+```{r 2E}
+# Comparing the ACF and PACF of the observations and simulations.
+e.ts.sim <- ts(Sim.trend.seasonal$residuals)
+e.ts.obs <- ts(NO2.trend.seasonal$residuals)
+
+# ACF plots
+ggAcf(e.ts.sim)
+ggAcf(e.ts.obs)
+# The ACF of the simulation decreases linearly while the ACF of the observation
+# decreases sinuisoidally
+
+# PACF plots
+ggPacf(e.ts.sim)
+ggPacf(e.ts.obs)
+# Both PACFs cut off after lag one but the simulation quickly and exponentially
+# goes to zero while the observation has sinuisoidal behavior
+```

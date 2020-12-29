@@ -1,0 +1,85 @@
+---
+title: "Lab 5"
+author: "Eric Jess"
+date: "11/4/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r cars}
+summary(cars)
+```
+
+```{r pressure, echo=FALSE}
+
+Lspam <- log(spam[,-58] + .1)
+Lspam[,58] <- spam[,58]
+
+# QUESTION 18
+Lspam.pc = princomp(Lspam[,1:57], cor = T)
+cumplot(Lspam.pc)
+
+# QUESTION 19
+biplot.fact(Lspam.pc, Lspam[,58])
+legend(-15, 5, legend = c("Spam", "Ham"), col = c("red", "blue"), pch = c(18, 19))
+
+
+# QUESTION 20
+Lspam.glm.main <- glm(V58~V1+V2+V3+V4+V5+V6+V7+V8+V9+V10+V48+V49+V50+V51+V52+V53+V54+V55+V56+V57, data = Lspam, family = binomial)
+summary(Lspam.glm.main)
+
+Lspam.null <- glm(V58~1, data = Lspam, family = binomial)
+
+anova(spam.null, Lspam.glm.main, test = "Chi")
+
+# QUESTION 21
+library(MASS)
+drop1(Lspam.glm.main, response~., test = "Chi", data = Lspam)
+
+# QUESTION 22
+(exp(Lspam.glm.main$coefficients[5])-1)*100
+
+# QUESTION 23
+source("ROC.R")
+
+Lspam.pred <- predict(Lspam.glm.main, type = "response")
+score.table(Lspam.pred, Lspam[,58], .5)
+
+# QUESTION 24
+Lspam.step <- step(Lspam.glm.main)
+summary(Lspam.step)
+
+# QUESTION 25
+anova(Lspam.glm.main, Lspam.step, test="Chi")
+
+# QUESTION 26
+AIC(Lspam.glm.main)
+AIC(Lspam.step)
+
+# QUESTION 27
+Lspam.step.pred <- predict(Lspam.step, type = "response")
+score.table(Lspam.step.pred, Lspam[,58], .5)
+
+# QUESTION 28
+plot.roc(Lspam.pred, Lspam[,58], main = "ROC Curve - SPAM Filter", col = "blue")
+
+lines.roc(Lspam.step.pred, Lspam[,58], col = "orange")
+
+# QUESTION 29
+Lspam.pc2 = princomp(Lspam[c(1:10,48:57)], cor = T)
+cumplot(Lspam.pc2)
+
+# QUESTION 30
+Lspam.pc2.glm <- pc.glm(Lspam.pc2, 98, Lspam[,58])
+Lspam.pc2.null <- pc.null(Lspam.pc2, 98, Lspam[,58])
+
+anova(Lspam.pc2.glm, Lspam.pc2.null, test = "Chi")
+
+# QUESTION 31
+Lspam.pc2.glm.pred <- predict(Lspam.pc2.glm, type = "response")
+score.table(Lspam.pc2.glm.pred, Lspam[,58], .5)
+
+```

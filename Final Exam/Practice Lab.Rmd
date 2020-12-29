@@ -1,0 +1,150 @@
+---
+title: "Practice Lab for Final Exam"
+author: "Eric Jess"
+date: "12/1/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+sourcedir <- "C:/Users/etj3pp/Desktop/SYS4021/Source"
+datadir <- "C:/Users/etj3pp/Desktop/SYS4021/Data"
+
+setwd(sourcedir)
+
+source("SPM_Panel.R")
+source("PCAplots.R")
+source("FactorPlots.R")
+
+source("pc.glm.R")
+source("ROC.R")
+source("TestSet.R")
+
+library(ggplot2)
+library(ggpubr)
+library(ggbiplot)
+
+```
+
+```{r Generalized Linear Models}
+
+##load the 'titanic.csv' into data frame
+setwd(datadir)
+titanic<-read.table('titanic.csv',header=T,sep=',')
+setwd(sourcedir)
+
+##convert to factors
+titanic$Survived <- factor(titanic$Survived)
+titanic$Pclass <- factor(titanic$Pclass)
+titanic$Sex <- factor(titanic$Sex)
+titanic$Cabin <- factor(titanic$Cabin)
+titanic$Embarked <- factor(titanic$Embarked)
+titanic$title <- factor(titanic$title)
+
+# QUESTION 1
+table(titanic$Survived)
+
+# QUESTION 2
+uva.pairs(titanic[,c(2,3,5,6,7,8,10,11,12,13)])
+
+# QUESTION 3
+titanic.glm.main <- glm(Survived~Pclass+Sex+Fare+Cabin, data = titanic, family = binomial)
+summary(titanic.glm.main)
+
+# QUESTION 4
+titanic.null <- glm(Survived~1, data = titanic, family = binomial)
+anova(titanic.null, titanic.glm.main, test = "Chi")
+
+# QUESTION 5
+titanic.glm2.main <- glm(Survived~Age+Fare+Sex+Pclass, data = titanic, family = binomial)
+summary(titanic.glm2.main)
+anova(titanic.null, titanic.glm2.main, test = "Chi")
+
+drop1(titanic.glm2.main, response~., test = "Chi", data = titanic)
+
+# QUESTION 6
+titanic.step <- step(titanic.glm2.main, data = titanic, family = binomial)
+anova(titanic.null, titanic.step, test = "Chi")
+
+
+# QUESTION 8
+titanic.step.pred <- predict(titanic.step, type = "response")
+score.table(titanic.step.pred, titanic$Survived, .5)
+
+# QUESTION 9
+plot.roc(titanic.step.pred, titanic$Survived, main = "ROC Curve - Survived", col = "blue")
+
+```
+
+
+```{r Multiple Linear Regression}
+##load the 'auto.csv' into data frame
+setwd(datadir)
+auto <- read.table('auto.csv',header=T,sep=',')
+setwd(sourcedir)
+
+auto$car <- as.factor(auto$car)
+auto$horsepower <- as.double(auto$horsepower)
+
+# Q10: How many outliers?
+mpg.box <- boxplot(auto$mpg)
+summary(mpg.box)
+
+# Q11: Which variable has the storngest linear relationship to mpg?
+uva.pairs(auto)
+
+# Q12/13: Main effects model
+mpg.main <- lm(mpg~as.factor(cylinders)+weight+displacement, data=auto)
+summary(mpg.main)
+
+# Q14: Cylinders predictor
+table(auto$cylinders)
+
+# Q15: Cylinders=4 as the base case
+mpg.main.rec <- lm(mpg~relevel(as.factor(cylinders), ref = "4")+weight+displacement, data=auto)
+summary(mpg.main.rec)
+
+# Q16: Diagnostics
+library(MASS)
+library(lindia)
+
+gg_diagnose(mpg.main.rec)
+
+library(olsrr)
+ols_test_breusch_pagan(mpg.main.rec) #non-constant variance
+
+plot(mpg.main.rec,which=4)
+```
+
+```{r Time Series}
+setwd(datadir)
+
+gnp96 <- read.table("gnp96.dat")
+gnp <- ts(gnp96[,2])
+
+# Q17: log(gnp)
+
+time.gnp<-c(1:(length(gnp)))
+Lgnp.trend<-lm(log(gnp)~time.gnp)
+
+summary(Lgnp.trend)
+
+# Q18
+plot(gnp)
+pg.gnp <- spec.pgram(log(gnp))
+
+# Q19
+ggAcf(log(gnp))
+
+# Q22
+Lgnp.auto <- auto.arima(diff(log(gnp)), approximation = FALSE)
+summary(Lgnp.auto)
+
+forecast(Lgnp.auto, h=4)
+
+```
+
+```{r pressure, echo=FALSE}
+
+```

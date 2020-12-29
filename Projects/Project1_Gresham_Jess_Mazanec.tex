@@ -1,0 +1,1488 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Project 2},
+  pdfauthor={Thomas Gresham, Eric Jess, Harrison Mazanec},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Project 2}
+\author{Thomas Gresham, Eric Jess, Harrison Mazanec}
+\date{12/7/2020}
+
+\begin{document}
+\maketitle
+
+Load data and impute missing values
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{setwd}\NormalTok{(datadir)}
+
+\CommentTok{# Read in data file}
+\NormalTok{airquality =}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'AirQualityUCI.csv'}\NormalTok{)}
+
+\CommentTok{# Replace -200 with NA}
+\NormalTok{airquality[airquality }\OperatorTok{==}\StringTok{ }\DecValTok{-200}\NormalTok{] <-}\StringTok{ }\OtherTok{NA}
+
+\CommentTok{# Convert integer type to numeric}
+\NormalTok{intcols =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{9}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DecValTok{12}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(intcols))\{}
+\NormalTok{  airquality[,intcols[i]] <-}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(airquality[,intcols[i]])}
+\NormalTok{\}}
+
+\KeywordTok{setwd}\NormalTok{(sourcedir)}
+
+\CommentTok{# Create new data frame with just NO2 and impute missing values}
+\NormalTok{AQdata =}\StringTok{ }\NormalTok{airquality[}\StringTok{"NO2.GT."}\NormalTok{]}
+\NormalTok{AQdata =}\StringTok{ }\KeywordTok{na_interpolation}\NormalTok{(AQdata)}
+
+\CommentTok{# Aggregate to daily maxima for model building}
+\NormalTok{dailyAQ <-}\StringTok{ }\KeywordTok{aggregate}\NormalTok{(AQdata, }\DataTypeTok{by=}\KeywordTok{list}\NormalTok{(}\KeywordTok{as.Date}\NormalTok{(airquality[,}\DecValTok{1}\NormalTok{],}\StringTok{"%m/%d/%Y"}\NormalTok{)), }\DataTypeTok{FUN=}\NormalTok{max)}
+
+\CommentTok{# Create time series of NO2}
+\NormalTok{orig.NO2.ts <-}\StringTok{ }\KeywordTok{ts}\NormalTok{(dailyAQ[,}\DecValTok{2}\NormalTok{])}
+
+\CommentTok{# Remove last 7 days of observations}
+\NormalTok{dailyAQ.new <-}\StringTok{ }\NormalTok{dailyAQ[}\DecValTok{1}\OperatorTok{:}\NormalTok{(}\KeywordTok{dim}\NormalTok{(dailyAQ)[}\DecValTok{1}\NormalTok{]}\OperatorTok{-}\DecValTok{7}\NormalTok{),]}
+\NormalTok{NO2.ts <-}\StringTok{ }\KeywordTok{ts}\NormalTok{(dailyAQ.new[,}\DecValTok{2}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+Part 1A - Seasonal Components
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot time series data}
+\KeywordTok{autoplot}\NormalTok{(NO2.ts, }\DataTypeTok{ylab =} \StringTok{"Maximum Daily Nitrogen Dioxide Concentration"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Day"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1A-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Periodogram of time series data}
+\NormalTok{pg.NO2 <-}\StringTok{ }\KeywordTok{spec.pgram}\NormalTok{(}\KeywordTok{log}\NormalTok{(NO2.ts), }\DataTypeTok{spans =} \DecValTok{9}\NormalTok{, }\DataTypeTok{demean=}\NormalTok{T, }\DataTypeTok{log=}\StringTok{'no'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1A-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Peak of periodogram}
+\NormalTok{max.omega.NO2 <-}\StringTok{ }\NormalTok{pg.NO2}\OperatorTok{$}\NormalTok{freq[}\KeywordTok{which}\NormalTok{(pg.NO2}\OperatorTok{$}\NormalTok{spec}\OperatorTok{==}\KeywordTok{max}\NormalTok{(pg.NO2}\OperatorTok{$}\NormalTok{spec))]}
+\NormalTok{max.omega.NO2 }\CommentTok{#0.00520833}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.005208333
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Period of data }
+\DecValTok{1}\OperatorTok{/}\NormalTok{max.omega.NO2 }\CommentTok{#192 days}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 192
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Sort spectrum from largest to smallest and find index}
+\NormalTok{sorted.spec <-}\StringTok{ }\KeywordTok{sort}\NormalTok{(pg.NO2}\OperatorTok{$}\NormalTok{spec, }\DataTypeTok{decreasing=}\NormalTok{T, }\DataTypeTok{index.return=}\NormalTok{T)}
+\KeywordTok{names}\NormalTok{(sorted.spec)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "x"  "ix"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Corresponding periods (omegas = frequences, Ts = periods)}
+\NormalTok{sorted.omegas <-}\StringTok{ }\NormalTok{pg.NO2}\OperatorTok{$}\NormalTok{freq[sorted.spec}\OperatorTok{$}\NormalTok{ix]}
+\NormalTok{sorted.Ts <-}\StringTok{ }\DecValTok{1}\OperatorTok{/}\NormalTok{pg.NO2}\OperatorTok{$}\NormalTok{freq[sorted.spec}\OperatorTok{$}\NormalTok{ix]}
+
+\CommentTok{# Look at first 20 frequencies}
+\NormalTok{sorted.omegas[}\DecValTok{1}\OperatorTok{:}\DecValTok{20}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 0.005208333 0.007812500 0.002604167 0.010416667 0.013020833 0.015625000
+##  [7] 0.018229167 0.020833333 0.023437500 0.026041667 0.041666667 0.138020833
+## [13] 0.044270833 0.028645833 0.148437500 0.151041667 0.031250000 0.039062500
+## [19] 0.145833333 0.140625000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sorted.Ts[}\DecValTok{1}\OperatorTok{:}\DecValTok{20}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 192.000000 128.000000 384.000000  96.000000  76.800000  64.000000
+##  [7]  54.857143  48.000000  42.666667  38.400000  24.000000   7.245283
+## [13]  22.588235  34.909091   6.736842   6.620690  32.000000  25.600000
+## [19]   6.857143   7.111111
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# From looking at the periodogram and maximum peaks, there is no clear period. However,}
+\CommentTok{# NO2 may depends on day of the week (travel, work commute, etc.)}
+
+\CommentTok{# Model seasonality based on days of the week (like we did for ham in TS1)}
+\NormalTok{t <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\KeywordTok{dim}\NormalTok{(dailyAQ.new)[}\DecValTok{1}\NormalTok{]))}
+
+\CommentTok{# March 10, 2004 is a Wednesday (first day in data frame)}
+\NormalTok{Day <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\OtherTok{NA}\NormalTok{, }\KeywordTok{length}\NormalTok{(NO2.ts))}
+\NormalTok{Day[}\KeywordTok{which}\NormalTok{((t }\OperatorTok{%%}\StringTok{ }\DecValTok{7}\NormalTok{)    }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{)] <-}\StringTok{ "W"} \CommentTok{#wednesday}
+\NormalTok{Day[}\KeywordTok{which}\NormalTok{((t }\OperatorTok{%%}\StringTok{ }\DecValTok{7}\NormalTok{)    }\OperatorTok{==}\StringTok{ }\DecValTok{2}\NormalTok{)] <-}\StringTok{ "R"} \CommentTok{#thursday}
+\NormalTok{Day[}\KeywordTok{which}\NormalTok{((t }\OperatorTok{%%}\StringTok{ }\DecValTok{7}\NormalTok{)    }\OperatorTok{==}\StringTok{ }\DecValTok{3}\NormalTok{)] <-}\StringTok{ "F"} \CommentTok{#friday}
+\NormalTok{Day[}\KeywordTok{which}\NormalTok{((t }\OperatorTok{%%}\StringTok{ }\DecValTok{7}\NormalTok{)    }\OperatorTok{==}\StringTok{ }\DecValTok{4}\NormalTok{)] <-}\StringTok{ "S"} \CommentTok{#saturday}
+\NormalTok{Day[}\KeywordTok{which}\NormalTok{((t }\OperatorTok{%%}\StringTok{ }\DecValTok{7}\NormalTok{)    }\OperatorTok{==}\StringTok{ }\DecValTok{5}\NormalTok{)] <-}\StringTok{ "U"} \CommentTok{#sunday}
+\NormalTok{Day[}\KeywordTok{which}\NormalTok{((t }\OperatorTok{%%}\StringTok{ }\DecValTok{7}\NormalTok{)    }\OperatorTok{==}\StringTok{ }\DecValTok{6}\NormalTok{)] <-}\StringTok{ "M"} \CommentTok{#monday}
+\NormalTok{Day[}\KeywordTok{which}\NormalTok{((t }\OperatorTok{%%}\StringTok{ }\DecValTok{7}\NormalTok{)    }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{)] <-}\StringTok{ "T"} \CommentTok{#tuesday}
+\NormalTok{Day <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(Day)}
+
+\KeywordTok{contrasts}\NormalTok{(Day) }\CommentTok{# Friday is the default base case}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   M R S T U W
+## F 0 0 0 0 0 0
+## M 1 0 0 0 0 0
+## R 0 1 0 0 0 0
+## S 0 0 1 0 0 0
+## T 0 0 0 1 0 0
+## U 0 0 0 0 1 0
+## W 0 0 0 0 0 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Day <-}\StringTok{ }\KeywordTok{relevel}\NormalTok{(}\KeywordTok{as.factor}\NormalTok{(Day), }\DataTypeTok{ref =} \StringTok{"U"}\NormalTok{) }\CommentTok{# Make Sunday the base case}
+
+\CommentTok{# Build seasonality model with Day as the only predictor}
+\NormalTok{NO2.season <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(NO2.ts }\OperatorTok{~}\StringTok{ }\NormalTok{Day)}
+\KeywordTok{summary}\NormalTok{(NO2.season)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = NO2.ts ~ Day)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -111.340  -36.196   -6.235   33.174  166.604 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  136.991      6.922  19.792  < 2e-16 ***
+## DayF          36.404      9.789   3.719 0.000230 ***
+## DayM          29.568      9.789   3.021 0.002694 ** 
+## DayR          38.083      9.789   3.891 0.000118 ***
+## DayS          13.924      9.789   1.422 0.155714    
+## DayT          34.692      9.834   3.528 0.000471 ***
+## DayW          33.934      9.789   3.467 0.000588 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 51.33 on 377 degrees of freedom
+## Multiple R-squared:  0.06342,    Adjusted R-squared:  0.04852 
+## F-statistic: 4.255 on 6 and 377 DF,  p-value: 0.0003666
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## In order to determine whether there were any seasonal components, we first plotted all the time series data. To check if the seasonality could be captured with trigonometric functions, we constructed a periodogram. However, the periodogram revealed no clear or intuitive periods (the max omega was 192 days). After considering how NO2 emissions primarily come from vehicles, we decided to account for day of the week. All coefficients were statistically significant from the base case (Sunday) except for Saturday, therefore difference between weekend and weekday causes a seasonal variation in the data. Based on this result, we have modeled the seasonal component using Day as a dummy variable.}
+\end{Highlighting}
+\end{Shaded}
+
+Part 1B - Trends
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Build trend model with time as the only predictor}
+\NormalTok{NO2.trend <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(NO2.ts }\OperatorTok{~}\StringTok{ }\NormalTok{t)}
+\KeywordTok{summary}\NormalTok{(NO2.trend) }\CommentTok{# Time is significant at the 0.001 level}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = NO2.ts ~ t)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -88.444 -33.593   2.634  28.304 138.425 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 113.76664    4.51323   25.21   <2e-16 ***
+## t             0.25902    0.02032   12.75   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 44.13 on 382 degrees of freedom
+## Multiple R-squared:  0.2985, Adjusted R-squared:  0.2966 
+## F-statistic: 162.5 on 1 and 382 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot model with trend}
+\KeywordTok{ggplot}\NormalTok{(dailyAQ.new, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Group}\FloatTok{.1}\NormalTok{,}\DataTypeTok{y =}\NormalTok{ NO2.GT.)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{stat_smooth}\NormalTok{(}\DataTypeTok{method=}\StringTok{"lm"}\NormalTok{,}\DataTypeTok{col=}\StringTok{"red"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Daily Maximum Nitrogen Dioxide Levels"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1B-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## There is a trend in the data (increasing), but the trend alone does not appear to be sufficient in explaining N02 levels.}
+
+\CommentTok{# Diagnostic plots for NO2.trend}
+\KeywordTok{autoplot}\NormalTok{(NO2.trend, }\DataTypeTok{labels.id =} \OtherTok{NULL}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: `arrange_()` is deprecated as of dplyr 0.7.0.
+## Please use `arrange()` instead.
+## See vignette('programming') for more help
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_warnings()` to see where this warning was generated.
+\end{verbatim}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1B-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{autoplot}\NormalTok{(NO2.trend, }\DataTypeTok{which=}\DecValTok{4}\NormalTok{) }\CommentTok{# No influential points}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1B-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# There are issues with the Gaussian assumption and non-constant variance.}
+
+\CommentTok{# Combine trend and season models}
+\NormalTok{NO2.trend.season <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(NO2.ts }\OperatorTok{~}\StringTok{ }\NormalTok{t }\OperatorTok{+}\StringTok{ }\NormalTok{Day)}
+\KeywordTok{summary}\NormalTok{(NO2.trend.season) }\CommentTok{# Coefficient of t is statistically significant}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = NO2.ts ~ t + Day)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -99.28 -26.91   2.88  25.05 128.38 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  86.5515     6.8502  12.635  < 2e-16 ***
+## t             0.2600     0.0195  13.333  < 2e-16 ***
+## DayF         36.9244     8.0765   4.572 6.57e-06 ***
+## DayM         29.3083     8.0765   3.629 0.000324 ***
+## DayR         38.8632     8.0767   4.812 2.17e-06 ***
+## DayS         14.1840     8.0765   1.756 0.079865 .  
+## DayT         35.0817     8.1138   4.324 1.97e-05 ***
+## DayW         34.9740     8.0768   4.330 1.91e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 42.35 on 376 degrees of freedom
+## Multiple R-squared:  0.3641, Adjusted R-squared:  0.3523 
+## F-statistic: 30.75 on 7 and 376 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot NO2.trend.season model}
+\KeywordTok{ggplot}\NormalTok{(dailyAQ.new, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Group}\FloatTok{.1}\NormalTok{,}\DataTypeTok{y =}\NormalTok{ NO2.GT.)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{Group}\FloatTok{.1}\NormalTok{,}\DataTypeTok{y=}\NormalTok{NO2.trend.season}\OperatorTok{$}\NormalTok{fitted.values),}\DataTypeTok{color=}\StringTok{"red"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Daily Maximum Nitrogen Levels"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1B-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## Accounting for trend and seasonality appears to be a better fit.}
+
+\CommentTok{# Diagnostic plots for NO2.trend.season}
+\KeywordTok{autoplot}\NormalTok{(NO2.trend.season, }\DataTypeTok{labels.id =} \OtherTok{NULL}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1B-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{autoplot}\NormalTok{(NO2.trend.season, }\DataTypeTok{which=}\DecValTok{4}\NormalTok{) }\CommentTok{# No influential points}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1B-6.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# There are still issues with the Gaussian assumption and non-constant variance}
+
+\CommentTok{# Compare models based on AIC}
+\KeywordTok{AIC}\NormalTok{(NO2.season)       }\CommentTok{#4123.301}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4123.301
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{AIC}\NormalTok{(NO2.trend)        }\CommentTok{#4002.334}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4002.334
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{AIC}\NormalTok{(NO2.trend.season) }\CommentTok{#3976.623}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3976.623
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Compare models based on Adjusted R^2}
+\KeywordTok{summary}\NormalTok{(NO2.season)}\OperatorTok{$}\NormalTok{adj.r.squared }\CommentTok{#0.04851873}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.04851873
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(NO2.trend)}\OperatorTok{$}\NormalTok{adj.r.squared  }\CommentTok{#0.2966398}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2966398
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(NO2.trend.season)}\OperatorTok{$}\NormalTok{adj.r.squared }\CommentTok{#0.3522569}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.3522569
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## It can be seen that the Adjusted R^2 value significantly increases when trend is added to our NO2 model. NO2.trend.season is the best of these three models based on AIC and adjusted R^2. We will use this model as a starting point moving forward.}
+\end{Highlighting}
+\end{Shaded}
+
+Part 1C - Autoregressive and Moving Average Components
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Regress the NO2.trend.season model over the residuals}
+\NormalTok{e.ts.NO2 <-}\StringTok{ }\KeywordTok{ts}\NormalTok{(NO2.trend.season}\OperatorTok{$}\NormalTok{residuals)}
+
+\CommentTok{# Plot the residuals over time}
+\KeywordTok{autoplot}\NormalTok{(e.ts.NO2)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1C-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# ACF and PACF of the residuals}
+\NormalTok{NO2.acf <-}\StringTok{ }\KeywordTok{ggAcf}\NormalTok{(e.ts.NO2)}
+\NormalTok{NO2.pacf <-}\StringTok{ }\KeywordTok{ggPacf}\NormalTok{(e.ts.NO2)}
+
+\CommentTok{# Plot ACF and PACF side by side}
+\KeywordTok{ggarrange}\NormalTok{(NO2.acf,NO2.pacf ,}\DataTypeTok{nrow=}\DecValTok{2}\NormalTok{,}\DataTypeTok{ncol=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1C-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# The ACF decays sinusoidally}
+\CommentTok{# The PACF cuts off after 2 lags (p = 2)}
+\CommentTok{# These two behavioral characteristics indicate that AR(2) model is appropriate}
+\CommentTok{# Since the ACF doesn't show a slow or linear decary, based on this alone, the time series data is stationary and so there are autoregressive and moving average components.}
+
+\CommentTok{# Construct an autoregressive model, AR(2)}
+\NormalTok{NO2.ar2 <-}\StringTok{ }\KeywordTok{arima}\NormalTok{(e.ts.NO2, }\DataTypeTok{order=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{))}
+\KeywordTok{summary}\NormalTok{(NO2.ar2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## arima(x = e.ts.NO2, order = c(2, 0, 0))
+## 
+## Coefficients:
+##          ar1     ar2  intercept
+##       0.5727  0.1477    -0.2847
+## s.e.  0.0504  0.0506     5.5527
+## 
+## sigma^2 estimated as 940.3:  log likelihood = -1859.66,  aic = 3727.31
+## 
+## Training set error measures:
+##                       ME     RMSE     MAE     MPE     MAPE      MASE
+## Training set -0.02103394 30.66357 23.6599 61.5904 235.3657 0.9135079
+##                     ACF1
+## Training set -0.01172723
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Construct a moving average model, MA(1)}
+\NormalTok{NO2.ma1 <-}\StringTok{ }\KeywordTok{arima}\NormalTok{(e.ts.NO2, }\DataTypeTok{order=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\KeywordTok{summary}\NormalTok{(NO2.ma1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## arima(x = e.ts.NO2, order = c(0, 0, 1))
+## 
+## Coefficients:
+##          ma1  intercept
+##       0.5390    -0.0725
+## s.e.  0.0374     2.7048
+## 
+## sigma^2 estimated as 1188:  log likelihood = -1904.46,  aic = 3814.92
+## 
+## Training set error measures:
+##                      ME     RMSE      MAE      MPE     MAPE     MASE      ACF1
+## Training set 0.02227328 34.47199 27.36525 84.61831 214.0021 1.056571 0.1742788
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Construct an ARMA model, ARMA(2,1)}
+\NormalTok{NO2.arma21 <-}\StringTok{ }\KeywordTok{arima}\NormalTok{(e.ts.NO2, }\DataTypeTok{order=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\KeywordTok{summary}\NormalTok{(NO2.arma21)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## arima(x = e.ts.NO2, order = c(2, 0, 1))
+## 
+## Coefficients:
+##          ar1      ar2      ma1  intercept
+##       1.3290  -0.3755  -0.7626     0.0115
+## s.e.  0.1444   0.1156   0.1239     7.7642
+## 
+## sigma^2 estimated as 929.9:  log likelihood = -1857.56,  aic = 3725.12
+## 
+## Training set error measures:
+##                      ME     RMSE      MAE      MPE     MAPE      MASE
+## Training set -0.1867032 30.49379 23.65914 63.11372 256.4921 0.9134784
+##                     ACF1
+## Training set -0.01182201
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Automatically select models using the arima() function}
+\NormalTok{NO2.auto <-}\StringTok{ }\KeywordTok{auto.arima}\NormalTok{(e.ts.NO2, }\DataTypeTok{approximation=}\OtherTok{FALSE}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(NO2.auto) }\CommentTok{# Constructs ARMA(2,1) automatically}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Series: e.ts.NO2 
+## ARIMA(2,0,1) with zero mean 
+## 
+## Coefficients:
+##          ar1      ar2      ma1
+##       1.3287  -0.3752  -0.7626
+## s.e.  0.1441   0.1154   0.1236
+## 
+## sigma^2 estimated as 937.2:  log likelihood=-1857.56
+## AIC=3723.12   AICc=3723.22   BIC=3738.92
+## 
+## Training set error measures:
+##                      ME    RMSE      MAE      MPE     MAPE      MASE
+## Training set -0.1845699 30.4938 23.65943 63.11498 256.4815 0.9134897
+##                     ACF1
+## Training set -0.01153163
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## Autoregressive and moving average components were determined by analyzing the ACF and PACF of residuals. Autoregressive and moving average models were then built based on the characteristics depicted in these plots.}
+\end{Highlighting}
+\end{Shaded}
+
+Part 1D - Model Assessment
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## Assessment of seasonal model (accounts for day of the week)}
+\KeywordTok{summary}\NormalTok{(NO2.season)}\OperatorTok{$}\NormalTok{adj.r.squared }\CommentTok{#0.04851873}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.04851873
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{AIC}\NormalTok{(NO2.season) }\CommentTok{#4123.301}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4123.301
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Construct seasonal model with trigonometric functions for comparison}
+\NormalTok{NO2.trigseason <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(NO2.ts }\OperatorTok{~}\StringTok{ }\KeywordTok{sin}\NormalTok{(}\DecValTok{2}\OperatorTok{*}\NormalTok{pi}\OperatorTok{*}\NormalTok{t}\OperatorTok{*}\NormalTok{max.omega.NO2) }\OperatorTok{+}\StringTok{ }\KeywordTok{cos}\NormalTok{(}\DecValTok{2}\OperatorTok{*}\NormalTok{pi}\OperatorTok{*}\NormalTok{t}\OperatorTok{*}\NormalTok{max.omega.NO2))}
+\KeywordTok{summary}\NormalTok{(NO2.trigseason)}\OperatorTok{$}\NormalTok{adj.r.squared }\CommentTok{#0.07473563}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.07473563
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{AIC}\NormalTok{(NO2.trigseason) }\CommentTok{#4108.625}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4108.625
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# NO2.trigseason is slightly better than NO2.season, however both are inadequate}
+
+\CommentTok{# Season model diagnostics}
+\KeywordTok{autoplot}\NormalTok{(NO2.season) }\CommentTok{# Non-Gaussian tails}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1D-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{autoplot}\NormalTok{(NO2.trigseason) }\CommentTok{# Non-Gaussian tails}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1D-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(olsrr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'olsrr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:datasets':
+## 
+##     rivers
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ols_test_breusch_pagan}\NormalTok{(NO2.season) }\CommentTok{# Nonconstant variance (P < 0.05)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Breusch Pagan Test for Heteroskedasticity
+##  -----------------------------------------
+##  Ho: the variance is constant            
+##  Ha: the variance is not constant        
+## 
+##                Data                
+##  ----------------------------------
+##  Response : NO2.ts 
+##  Variables: fitted values of NO2.ts 
+## 
+##         Test Summary          
+##  -----------------------------
+##  DF            =    1 
+##  Chi2          =    4.623806 
+##  Prob > Chi2   =    0.03153119
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ols_test_breusch_pagan}\NormalTok{(NO2.trigseason) }\CommentTok{# Nonconstant variance (P < 0.0001)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Breusch Pagan Test for Heteroskedasticity
+##  -----------------------------------------
+##  Ho: the variance is constant            
+##  Ha: the variance is not constant        
+## 
+##                Data                
+##  ----------------------------------
+##  Response : NO2.ts 
+##  Variables: fitted values of NO2.ts 
+## 
+##          Test Summary           
+##  -------------------------------
+##  DF            =    1 
+##  Chi2          =    21.73565 
+##  Prob > Chi2   =    3.129216e-06
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## Assessment of trend model}
+\KeywordTok{summary}\NormalTok{(NO2.trend)}\OperatorTok{$}\NormalTok{adj.r.squared }\CommentTok{#0.2966398}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2966398
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{AIC}\NormalTok{(NO2.trend) }\CommentTok{#4002.334}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4002.334
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Trend season model from 1B}
+\KeywordTok{summary}\NormalTok{(NO2.trend.season)}\OperatorTok{$}\NormalTok{adj.r.squared }\CommentTok{#0.3522569}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.3522569
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{AIC}\NormalTok{(NO2.trend.season) }\CommentTok{#3976.623}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3976.623
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(NO2.trend, NO2.trend.season) }\CommentTok{# Partial F Test indicates that season component (Day) adds predictive value (P < 0.0001), thus choose the larger model (NO2.trend.season)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: NO2.ts ~ t
+## Model 2: NO2.ts ~ t + Day
+##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+## 1    382 744067                                  
+## 2    376 674468  6     69599 6.4666 1.668e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Construct trend season model with trigonometric functions for comparison}
+\NormalTok{NO2.trend.trigseason <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(NO2.ts }\OperatorTok{~}\StringTok{ }\NormalTok{t }\OperatorTok{+}\StringTok{ }\KeywordTok{sin}\NormalTok{(}\DecValTok{2}\OperatorTok{*}\NormalTok{pi}\OperatorTok{*}\NormalTok{t}\OperatorTok{*}\NormalTok{max.omega.NO2) }\OperatorTok{+}\StringTok{ }\KeywordTok{cos}\NormalTok{(}\DecValTok{2}\OperatorTok{*}\NormalTok{pi}\OperatorTok{*}\NormalTok{t}\OperatorTok{*}\NormalTok{max.omega.NO2))}
+\KeywordTok{summary}\NormalTok{(NO2.trend.trigseason)}\OperatorTok{$}\NormalTok{adj.r.squared }\CommentTok{#0.3041614}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.3041614
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{AIC}\NormalTok{(NO2.trend.trigseason) }\CommentTok{#4000.19}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4000.19
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(NO2.trend, NO2.trend.trigseason) }\CommentTok{# Partial F Test indicates season component (trig functions) adds some predictive value (P < 0.05)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: NO2.ts ~ t
+## Model 2: NO2.ts ~ t + sin(2 * pi * t * max.omega.NO2) + cos(2 * pi * t * 
+##     max.omega.NO2)
+##   Res.Df    RSS Df Sum of Sq      F  Pr(>F)  
+## 1    382 744067                              
+## 2    380 732256  2     11811 3.0646 0.04783 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# NO2.trend.season (Day) is better than NO2.trend.trigseason (trig function) based on adjusted R-squared and AIC. The seasonal component of the Day model is also more intuitive than the trigonometric model, which uses a seemingly arbitrary period (192 days).}
+
+\CommentTok{# Trend diagnostics}
+\KeywordTok{autoplot}\NormalTok{(NO2.trend.season) }\CommentTok{# Non-Gaussian tails}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1D-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ols_test_breusch_pagan}\NormalTok{(NO2.trend.season) }\CommentTok{# Nonconstant variance (P = 0.00017)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Breusch Pagan Test for Heteroskedasticity
+##  -----------------------------------------
+##  Ho: the variance is constant            
+##  Ha: the variance is not constant        
+## 
+##                Data                
+##  ----------------------------------
+##  Response : NO2.ts 
+##  Variables: fitted values of NO2.ts 
+## 
+##          Test Summary           
+##  -------------------------------
+##  DF            =    1 
+##  Chi2          =    14.18883 
+##  Prob > Chi2   =    0.0001653494
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{e.ts.NO2 <-}\StringTok{ }\KeywordTok{ts}\NormalTok{(NO2.trend.season}\OperatorTok{$}\NormalTok{residuals) }\CommentTok{# Regress NO2.trend.season model over the residuals}
+\KeywordTok{Box.test}\NormalTok{(e.ts.NO2, }\DataTypeTok{type=}\StringTok{"Ljung-Box"}\NormalTok{) }\CommentTok{# Residual correlations are NOT independent (P < 2.2e-16)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Box-Ljung test
+## 
+## data:  e.ts.NO2
+## X-squared = 174.79, df = 1, p-value < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## Assessment of autoregressive and moving average models}
+
+\CommentTok{# Compare 4 models based on AIC}
+\KeywordTok{AIC}\NormalTok{(NO2.ar2) }\CommentTok{#AIC=3727.311}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3727.311
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{AIC}\NormalTok{(NO2.ma1) }\CommentTok{#AIC=3814.921}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3814.921
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{AIC}\NormalTok{(NO2.arma21) }\CommentTok{#AIC=3725.118}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3725.118
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{AIC}\NormalTok{(NO2.auto) }\CommentTok{#AIC=3723.118}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3723.118
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Assess residuals vs. fitted}
+\NormalTok{model1 =}\StringTok{ }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{fitted}\NormalTok{(NO2.ar2), }\DataTypeTok{y=}\NormalTok{NO2.ar2}\OperatorTok{$}\NormalTok{residuals)) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"AR2"}\NormalTok{)}
+\NormalTok{model2 =}\StringTok{ }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{fitted}\NormalTok{(NO2.ma1), }\DataTypeTok{y=}\NormalTok{NO2.ma1}\OperatorTok{$}\NormalTok{residuals)) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"MA1"}\NormalTok{)}
+\NormalTok{model3 =}\StringTok{ }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{fitted}\NormalTok{(NO2.arma21), }\DataTypeTok{y=}\NormalTok{NO2.arma21}\OperatorTok{$}\NormalTok{residuals)) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"ARMA21"}\NormalTok{)}
+\NormalTok{model4 =}\StringTok{ }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{fitted}\NormalTok{(NO2.auto), }\DataTypeTok{y=}\NormalTok{NO2.auto}\OperatorTok{$}\NormalTok{residuals)) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Auto"}\NormalTok{)}
+
+\KeywordTok{ggarrange}\NormalTok{(model1, model2, model3, model4, }\DataTypeTok{ncol=}\DecValTok{2}\NormalTok{, }\DataTypeTok{nrow=}\DecValTok{2}\NormalTok{) }\CommentTok{# Residuals appear homoscedastic with zero mean}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+\end{verbatim}
+
+\begin{verbatim}
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+\end{verbatim}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1D-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Assess normality of residuals}
+\NormalTok{model1 =}\StringTok{ }\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{sample=}\NormalTok{NO2.ar2}\OperatorTok{$}\NormalTok{residuals) }\OperatorTok{+}\StringTok{ }\KeywordTok{stat_qq_line}\NormalTok{(}\DataTypeTok{color=}\StringTok{"red"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"AR2"}\NormalTok{)}
+\NormalTok{model2 =}\StringTok{ }\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{sample=}\NormalTok{NO2.ma1}\OperatorTok{$}\NormalTok{residuals) }\OperatorTok{+}\StringTok{ }\KeywordTok{stat_qq_line}\NormalTok{(}\DataTypeTok{color=}\StringTok{"red"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"MA1"}\NormalTok{)}
+\NormalTok{model3 =}\StringTok{ }\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{sample=}\NormalTok{NO2.arma21}\OperatorTok{$}\NormalTok{residuals) }\OperatorTok{+}\StringTok{ }\KeywordTok{stat_qq_line}\NormalTok{(}\DataTypeTok{color=}\StringTok{"red"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"ARMA21"}\NormalTok{)}
+\NormalTok{model4 =}\StringTok{ }\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{sample=}\NormalTok{NO2.auto}\OperatorTok{$}\NormalTok{residuals) }\OperatorTok{+}\StringTok{ }\KeywordTok{stat_qq_line}\NormalTok{(}\DataTypeTok{color=}\StringTok{"red"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Auto"}\NormalTok{)}
+
+\KeywordTok{ggarrange}\NormalTok{(model1, model2, model3, model4, }\DataTypeTok{ncol=}\DecValTok{2}\NormalTok{, }\DataTypeTok{nrow=}\DecValTok{2}\NormalTok{) }\CommentTok{# Residuals show non-Gaussian tails}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type ts. Defaulting to continuous.
+\end{verbatim}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1D-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot diagnostics for independence of residuals using tsdiag()}
+\KeywordTok{ggtsdiag}\NormalTok{(NO2.ar2,}\DataTypeTok{gof.lag=}\DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: `mutate_()` is deprecated as of dplyr 0.7.0.
+## Please use `mutate()` instead.
+## See vignette('programming') for more help
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_warnings()` to see where this warning was generated.
+\end{verbatim}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1D-6.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{Box.test}\NormalTok{(NO2.ar2}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{type=}\StringTok{"Ljung-Box"}\NormalTok{) }\CommentTok{# Residuals are independent (P = 0.8175)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Box-Ljung test
+## 
+## data:  NO2.ar2$residuals
+## X-squared = 0.053224, df = 1, p-value = 0.8175
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggtsdiag}\NormalTok{(NO2.ma1,}\DataTypeTok{gof.lag=}\DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1D-7.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{Box.test}\NormalTok{(NO2.ma1}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{type=}\StringTok{"Ljung-Box"}\NormalTok{) }\CommentTok{#vResiduals are NOT independent (P < 0.001)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Box-Ljung test
+## 
+## data:  NO2.ma1$residuals
+## X-squared = 11.755, df = 1, p-value = 0.0006069
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggtsdiag}\NormalTok{(NO2.arma21,}\DataTypeTok{gof.lag=}\DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1D-8.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{Box.test}\NormalTok{(NO2.arma21}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{type=}\StringTok{"Ljung-Box"}\NormalTok{) }\CommentTok{# Residuals are independent (P = 0.8161)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Box-Ljung test
+## 
+## data:  NO2.arma21$residuals
+## X-squared = 0.054088, df = 1, p-value = 0.8161
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggtsdiag}\NormalTok{(NO2.auto,}\DataTypeTok{gof.lag=}\DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1D-9.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{Box.test}\NormalTok{(NO2.auto}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{type=}\StringTok{"Ljung-Box"}\NormalTok{) }\CommentTok{# Residuals are independent (P = 0.8205)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Box-Ljung test
+## 
+## data:  NO2.auto$residuals
+## X-squared = 0.051464, df = 1, p-value = 0.8205
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot the autocorrelation (ACF) and partial autocorrelation (PACF) of the residuals of NO2.auto}
+\NormalTok{NO2.auto.resid.acf <-}\StringTok{ }\KeywordTok{ggAcf}\NormalTok{(NO2.auto}\OperatorTok{$}\NormalTok{residuals)}
+\NormalTok{NO2.auto.resid.pacf <-}\StringTok{ }\KeywordTok{ggPacf}\NormalTok{(NO2.auto}\OperatorTok{$}\NormalTok{residuals)}
+\KeywordTok{ggarrange}\NormalTok{(NO2.auto.resid.acf,NO2.auto.resid.pacf,}\DataTypeTok{nrow=}\DecValTok{2}\NormalTok{,}\DataTypeTok{ncol=}\DecValTok{1}\NormalTok{) }\CommentTok{# A few slightly significant lags}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1D-10.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## NO2.auto, the selected model, accounts for correlation in the residuals. Aside from the non-Gaussian upper tail, the diagnostics indicate no remaining issues.}
+\end{Highlighting}
+\end{Shaded}
+
+Part 1E - Forecasting
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Forecast the next 7 days of NO2 level residuals}
+\NormalTok{NO2.auto.forecast <-}\StringTok{ }\KeywordTok{forecast}\NormalTok{(NO2.auto, }\DataTypeTok{h=}\DecValTok{7}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(NO2.auto.forecast)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1E-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## Prediction performance}
+
+\CommentTok{# The test period in days}
+\NormalTok{next}\FloatTok{.7}\NormalTok{days.time <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{length}\NormalTok{(orig.NO2.ts)}\OperatorTok{-}\DecValTok{6}\NormalTok{)}\OperatorTok{:}\NormalTok{(}\KeywordTok{length}\NormalTok{(orig.NO2.ts))}
+\NormalTok{next}\FloatTok{.7}\NormalTok{days.Day <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"T"}\NormalTok{,}\StringTok{"W"}\NormalTok{,}\StringTok{"R"}\NormalTok{,}\StringTok{"F"}\NormalTok{,}\StringTok{"S"}\NormalTok{,}\StringTok{"U"}\NormalTok{,}\StringTok{"M"}\NormalTok{) }\CommentTok{#last 7 days start on a Tuesday}
+
+\CommentTok{# The test data frame}
+\NormalTok{next}\FloatTok{.7}\NormalTok{days <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{t =}\NormalTok{ next}\FloatTok{.7}\NormalTok{days.time,}
+                         \DataTypeTok{Day =}\NormalTok{ next}\FloatTok{.7}\NormalTok{days.Day,}
+                         \DataTypeTok{NO2 =}\NormalTok{ orig.NO2.ts[next}\FloatTok{.7}\NormalTok{days.time])}
+
+\CommentTok{# The actual time series for the test period}
+\NormalTok{next}\FloatTok{.7}\NormalTok{days.ts <-}\StringTok{ }\KeywordTok{ts}\NormalTok{(next}\FloatTok{.7}\NormalTok{days}\OperatorTok{$}\NormalTok{NO2)}
+
+\CommentTok{# Prediction for the next 7 days by NO2.auto}
+\NormalTok{E_Y.pred <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(NO2.trend.season, }\DataTypeTok{newdata=}\NormalTok{next}\FloatTok{.7}\NormalTok{days)}
+\NormalTok{e_t.pred <-}\StringTok{ }\KeywordTok{forecast}\NormalTok{(NO2.auto, }\DataTypeTok{h=}\DecValTok{7}\NormalTok{)}
+\NormalTok{next}\FloatTok{.7}\NormalTok{days.prediction <-}\StringTok{ }\NormalTok{E_Y.pred }\OperatorTok{+}\StringTok{ }\NormalTok{e_t.pred}\OperatorTok{$}\NormalTok{mean}
+
+\CommentTok{# MSE}
+\KeywordTok{mean}\NormalTok{((next}\FloatTok{.7}\NormalTok{days.prediction }\OperatorTok{-}\StringTok{ }\NormalTok{next}\FloatTok{.7}\NormalTok{days}\OperatorTok{$}\NormalTok{NO2)}\OperatorTok{^}\DecValTok{2}\NormalTok{) }\CommentTok{#561.5447}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 561.5447
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot actual values and predicted values}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{ts}\NormalTok{(next}\FloatTok{.7}\NormalTok{days}\OperatorTok{$}\NormalTok{NO2),}\DataTypeTok{type=}\StringTok{'o'}\NormalTok{,}\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{300}\NormalTok{))}
+\KeywordTok{lines}\NormalTok{(}\KeywordTok{ts}\NormalTok{(next}\FloatTok{.7}\NormalTok{days.prediction),}\DataTypeTok{col=}\StringTok{'red'}\NormalTok{,}\DataTypeTok{type=}\StringTok{'o'}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{7}\NormalTok{, E_Y.pred }\OperatorTok{+}\StringTok{ }\NormalTok{e_t.pred}\OperatorTok{$}\NormalTok{lower[,}\DecValTok{2}\NormalTok{], }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{, }\DataTypeTok{lty =} \StringTok{"dashed"}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{7}\NormalTok{, E_Y.pred }\OperatorTok{+}\StringTok{ }\NormalTok{e_t.pred}\OperatorTok{$}\NormalTok{upper[,}\DecValTok{2}\NormalTok{], }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{, }\DataTypeTok{lty =} \StringTok{"dashed"}\NormalTok{)}
+\KeywordTok{legend}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{60}\NormalTok{, }\DataTypeTok{legend =} \KeywordTok{c}\NormalTok{(}\StringTok{"Actual"}\NormalTok{, }\StringTok{"Predicted"}\NormalTok{), }\DataTypeTok{lwd =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \KeywordTok{c}\NormalTok{(}\StringTok{"black"}\NormalTok{, }\StringTok{"red"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/1E-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## The MSE value of the 7-day forecast is 561.5447 which is reasonable.}
+\end{Highlighting}
+\end{Shaded}
+
+Part 2A - Reproduce appearance of time series
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Simulate 12 months of daily max NO2 concentration with the chosen model}
+\CommentTok{# Days in 12 months: 7*52 }
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\NormalTok{auto.sim <-}\StringTok{ }\KeywordTok{arima.sim}\NormalTok{(}\DataTypeTok{n=}\DecValTok{7}\OperatorTok{*}\DecValTok{52}\NormalTok{, }\KeywordTok{list}\NormalTok{(}\DataTypeTok{ar=}\KeywordTok{c}\NormalTok{(NO2.auto}\OperatorTok{$}\NormalTok{coef[}\DecValTok{1}\NormalTok{],NO2.auto}\OperatorTok{$}\NormalTok{coef[}\DecValTok{2}\NormalTok{]),}
+                                      \DataTypeTok{ma=}\KeywordTok{c}\NormalTok{(NO2.auto}\OperatorTok{$}\NormalTok{coef[}\DecValTok{3}\NormalTok{])),}
+                        \DataTypeTok{sd=}\KeywordTok{sqrt}\NormalTok{(NO2.auto}\OperatorTok{$}\NormalTok{sigma2))}
+
+\CommentTok{# Create time variable for next 12 months}
+\NormalTok{next}\FloatTok{.12}\NormalTok{mos.time <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\NormalTok{(}\DecValTok{7}\OperatorTok{*}\DecValTok{52}\NormalTok{))}
+
+\CommentTok{# Create new linear model of max NO2 concentrations vs. the day and the seasonality}
+\NormalTok{NO2.trend.seasonal<-}\KeywordTok{lm}\NormalTok{(NO2.ts[next}\FloatTok{.12}\NormalTok{mos.time]}\OperatorTok{~}\NormalTok{next}\FloatTok{.12}\NormalTok{mos.time}\OperatorTok{+}\StringTok{ }\KeywordTok{sin}\NormalTok{(}\DecValTok{2}\OperatorTok{*}\NormalTok{pi}\OperatorTok{*}\NormalTok{next}\FloatTok{.12}\NormalTok{mos.time}\OperatorTok{/}\DecValTok{7}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{cos}\NormalTok{(}\DecValTok{2}\OperatorTok{*}\NormalTok{pi}\OperatorTok{*}\NormalTok{next}\FloatTok{.12}\NormalTok{mos.time}\OperatorTok{/}\DecValTok{7}\NormalTok{))}
+\KeywordTok{summary}\NormalTok{(NO2.trend.seasonal)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = NO2.ts[next.12mos.time] ~ next.12mos.time + sin(2 * 
+##     pi * next.12mos.time/7) + cos(2 * pi * next.12mos.time/7))
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -101.278  -28.804    1.803   27.593  137.207 
+## 
+## Coefficients:
+##                                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                     113.57737    4.55226  24.950  < 2e-16 ***
+## next.12mos.time                   0.25970    0.02162  12.014  < 2e-16 ***
+## sin(2 * pi * next.12mos.time/7)  14.16229    3.21233   4.409 1.37e-05 ***
+## cos(2 * pi * next.12mos.time/7)   5.51465    3.21209   1.717   0.0869 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 43.33 on 360 degrees of freedom
+## Multiple R-squared:  0.315,  Adjusted R-squared:  0.3093 
+## F-statistic: 55.18 on 3 and 360 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Create test data frame}
+\CommentTok{# The test data frame}
+\NormalTok{next}\FloatTok{.12}\NormalTok{mos <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{t =}\NormalTok{ next}\FloatTok{.12}\NormalTok{mos.time,}\DataTypeTok{Day =}\NormalTok{ next}\FloatTok{.7}\NormalTok{days.Day, }\DataTypeTok{NO2 =}\NormalTok{ NO2.ts[next}\FloatTok{.12}\NormalTok{mos.time])}
+
+\CommentTok{# The actual time series for the test period}
+\NormalTok{next}\FloatTok{.12}\NormalTok{mos.ts <-}\StringTok{ }\NormalTok{NO2.ts[next}\FloatTok{.12}\NormalTok{mos.time]}
+
+\NormalTok{next}\FloatTok{.12}\NormalTok{mos.ts <-}\StringTok{ }\KeywordTok{ts}\NormalTok{(next}\FloatTok{.12}\NormalTok{mos}\OperatorTok{$}\NormalTok{NO2)}
+
+\CommentTok{# Simulate 12 months}
+\NormalTok{EY.pred <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(NO2.trend.seasonal, }\DataTypeTok{newdata=}\NormalTok{next}\FloatTok{.12}\NormalTok{mos)}
+\NormalTok{et.pred  <-}\StringTok{ }\KeywordTok{forecast}\NormalTok{(NO2.auto, }\DataTypeTok{h=}\DecValTok{364}\NormalTok{)}
+\NormalTok{next}\FloatTok{.12}\NormalTok{mos.prediction <-}\StringTok{ }\NormalTok{EY.pred }\OperatorTok{+}\StringTok{ }\NormalTok{et.pred}\OperatorTok{$}\NormalTok{mean}
+
+\CommentTok{# Plot actual values and predicted values (Observations and Simulation)}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{ts}\NormalTok{(next}\FloatTok{.12}\NormalTok{mos}\OperatorTok{$}\NormalTok{NO2),}\DataTypeTok{type=}\StringTok{'o'}\NormalTok{,}\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{400}\NormalTok{))}
+\KeywordTok{lines}\NormalTok{(}\KeywordTok{ts}\NormalTok{(next}\FloatTok{.12}\NormalTok{mos.prediction),}\DataTypeTok{col=}\StringTok{'red'}\NormalTok{,}\DataTypeTok{type=}\StringTok{'o'}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{364}\NormalTok{, EY.pred }\OperatorTok{+}\StringTok{ }\NormalTok{et.pred}\OperatorTok{$}\NormalTok{lower[,}\DecValTok{2}\NormalTok{], }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{, }\DataTypeTok{lty =} \StringTok{"dashed"}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{364}\NormalTok{, EY.pred }\OperatorTok{+}\StringTok{ }\NormalTok{et.pred}\OperatorTok{$}\NormalTok{upper[,}\DecValTok{2}\NormalTok{], }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{, }\DataTypeTok{lty =} \StringTok{"dashed"}\NormalTok{)}
+\KeywordTok{legend}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{60}\NormalTok{, }\DataTypeTok{legend =} \KeywordTok{c}\NormalTok{(}\StringTok{"Actual"}\NormalTok{, }\StringTok{"Predicted"}\NormalTok{), }\DataTypeTok{lwd =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \KeywordTok{c}\NormalTok{(}\StringTok{"black"}\NormalTok{, }\StringTok{"red"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/2A-1.pdf}
+
+Part 2B - Reproduce observed trends
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Compare linear models of simulations and observations}
+\CommentTok{# Create linear model of trends and seasonality from simulation}
+\NormalTok{Sim.trend.seasonal <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(next}\FloatTok{.12}\NormalTok{mos.prediction}\OperatorTok{~}\NormalTok{next}\FloatTok{.12}\NormalTok{mos.time}\OperatorTok{+}\StringTok{ }\KeywordTok{sin}\NormalTok{(}\DecValTok{2}\OperatorTok{*}\NormalTok{pi}\OperatorTok{*}\NormalTok{next}\FloatTok{.12}\NormalTok{mos.time}\OperatorTok{/}\DecValTok{7}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{cos}\NormalTok{(}\DecValTok{2}\OperatorTok{*}\NormalTok{pi}\OperatorTok{*}\NormalTok{next}\FloatTok{.12}\NormalTok{mos.time}\OperatorTok{/}\DecValTok{7}\NormalTok{))}
+
+\CommentTok{# Compare coefficients of time of Simulation model and Observations model}
+\KeywordTok{summary}\NormalTok{(Sim.trend.seasonal) }\CommentTok{# 0.2729}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = next.12mos.prediction ~ next.12mos.time + sin(2 * 
+##     pi * next.12mos.time/7) + cos(2 * pi * next.12mos.time/7))
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -26.4147  -0.6447   0.4787   1.5683   2.4374 
+## 
+## Coefficients:
+##                                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                     1.103e+02  3.153e-01  349.86   <2e-16 ***
+## next.12mos.time                 2.729e-01  1.497e-03  182.23   <2e-16 ***
+## sin(2 * pi * next.12mos.time/7) 1.400e+01  2.225e-01   62.94   <2e-16 ***
+## cos(2 * pi * next.12mos.time/7) 5.546e+00  2.225e-01   24.93   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.002 on 360 degrees of freedom
+## Multiple R-squared:  0.9905, Adjusted R-squared:  0.9904 
+## F-statistic: 1.251e+04 on 3 and 360 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(NO2.trend.seasonal) }\CommentTok{# 0.2597}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = NO2.ts[next.12mos.time] ~ next.12mos.time + sin(2 * 
+##     pi * next.12mos.time/7) + cos(2 * pi * next.12mos.time/7))
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -101.278  -28.804    1.803   27.593  137.207 
+## 
+## Coefficients:
+##                                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                     113.57737    4.55226  24.950  < 2e-16 ***
+## next.12mos.time                   0.25970    0.02162  12.014  < 2e-16 ***
+## sin(2 * pi * next.12mos.time/7)  14.16229    3.21233   4.409 1.37e-05 ***
+## cos(2 * pi * next.12mos.time/7)   5.51465    3.21209   1.717   0.0869 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 43.33 on 360 degrees of freedom
+## Multiple R-squared:  0.315,  Adjusted R-squared:  0.3093 
+## F-statistic: 55.18 on 3 and 360 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## The percentage difference of the coefficient of time is 4.95% which is quite small.}
+\end{Highlighting}
+\end{Shaded}
+
+Part 2C - Reproduce seasonality
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Comparing periodograms of simulations and observations}
+\CommentTok{# periodogram of simulations}
+\NormalTok{pg.Sim <-}\StringTok{ }\KeywordTok{spec.pgram}\NormalTok{(}\KeywordTok{log}\NormalTok{(next}\FloatTok{.12}\NormalTok{mos.prediction), }\DataTypeTok{spans =} \DecValTok{9}\NormalTok{, }\DataTypeTok{demean=}\NormalTok{T, }\DataTypeTok{log=}\StringTok{'no'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/2C-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# periodogram of observations}
+\NormalTok{pg.Obs <-}\StringTok{ }\KeywordTok{spec.pgram}\NormalTok{(}\KeywordTok{log}\NormalTok{(next}\FloatTok{.12}\NormalTok{mos.ts), }\DataTypeTok{spans =} \DecValTok{9}\NormalTok{, }\DataTypeTok{demean=}\NormalTok{T, }\DataTypeTok{log=}\StringTok{'no'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/2C-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# The peak in the simulated periodogram is very defined (expected) whereas the original periodogram has no clear period. }
+\end{Highlighting}
+\end{Shaded}
+
+Part 2D - Reproduce observed mean and variance
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Comparing mean and variance of the simulations and observations}
+\KeywordTok{mean}\NormalTok{(next}\FloatTok{.12}\NormalTok{mos.prediction) }\CommentTok{# 160.1174}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 160.1174
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(next}\FloatTok{.12}\NormalTok{mos.ts) }\CommentTok{# 160.9731}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 160.9731
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Percent difference between means is 0.533% (mean of simulation is 0.8557 microg/m^3 smaller than the observations)}
+
+\KeywordTok{var}\NormalTok{(next}\FloatTok{.12}\NormalTok{mos.prediction) }\CommentTok{# 940.635}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 940.635
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{var}\NormalTok{(next}\FloatTok{.12}\NormalTok{mos.ts) }\CommentTok{# 2718.505}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2718.505
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Percent difference between variance is 97.17}
+
+\CommentTok{# The variance of the simulation is much smaller than the observations}
+\end{Highlighting}
+\end{Shaded}
+
+Part 2E - Reproduce autocorrelation of time series
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Comparing the ACF and PACF of the observations and simulations.}
+\NormalTok{e.ts.sim <-}\StringTok{ }\KeywordTok{ts}\NormalTok{(Sim.trend.seasonal}\OperatorTok{$}\NormalTok{residuals)}
+\NormalTok{e.ts.obs <-}\StringTok{ }\KeywordTok{ts}\NormalTok{(NO2.trend.seasonal}\OperatorTok{$}\NormalTok{residuals)}
+
+\CommentTok{# ACF plots}
+\KeywordTok{ggAcf}\NormalTok{(e.ts.sim)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/2E-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggAcf}\NormalTok{(e.ts.obs)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/2E-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# The ACF of the simulation decreases linearly while the ACF of the observation}
+\CommentTok{# decreases sinuisoidally}
+
+\CommentTok{# PACF plots}
+\KeywordTok{ggPacf}\NormalTok{(e.ts.sim)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/2E-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggPacf}\NormalTok{(e.ts.obs)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project1_Gresham_Jess_Mazanec_files/figure-latex/2E-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# The PACF of the simulation cuts off after one lag quickly and exponentially whereas the PACF for observations shows sinuisoidal behavior and cuts off after lag 15.}
+\end{Highlighting}
+\end{Shaded}
+
+\end{document}

@@ -1,0 +1,205 @@
+---
+title: "Final Exam Part B"
+author: "Eric Jess"
+date: "12/5/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+require("knitr")
+sourcedir <- "C:/Users/etj3pp/Desktop/SYS4021/Source"
+datadir <- "C:/Users/etj3pp/Desktop/SYS4021/Data"
+opts_knit$set(root.dir = sourcedir)
+setwd(sourcedir)
+
+source("SPM_Panel.R")
+source("PCAplots.R")
+source("FactorPlots.R")
+
+source("pc.glm.R")
+source("ROC.R")
+
+library(MASS)
+library(lindia)
+
+library(olsrr)
+
+library(ggbiplot)
+library(ggfortify)
+library(ggplot2)
+library(ggpubr)
+
+library("car")
+library(forecast)
+library(imputeTS)
+library(lubridate)
+library(mtsdi)
+library(tidyverse)
+library(tseries)
+
+```
+
+Part 1: Linear Regression
+```{r part1}
+
+# load app.csv into data frame
+setwd(datadir)
+app <- read.table("app.csv", sep = ",", header = T)
+setwd(sourcedir)
+
+# Q1
+pricebox <- boxplot(app$Price)
+summary(pricebox)
+
+# Q2
+app$Platform <- factor(app$Platform) #convert Platform to categorical variable
+uva.pairs(app)
+
+# Q3, Q4
+app.inter <- lm(Price~(Platform+Users)^2, data=app)
+summary(app.inter)
+
+AIC(app.inter)
+summary(app.inter)$adj.r.squared
+
+# Q5
+app.main <- lm(Price~., data=app)
+summary(app.main)
+
+AIC(app.main)
+summary(app.main)$adj.r.squared
+
+# Q6
+anova(app.inter,app.main)
+
+# Q7
+autoplot(app.main)
+
+shapiro.test(app.main$residuals) #reject null hypothesis, residuals are not normal
+
+# Q8
+boxcox(app.main) #around zero, log transformation
+
+# Q9
+# only quantitative variables can be used for PCA (exclude Platform and Advert)
+
+# Q10
+app.pca.corr <- princomp(app[,c("Develop","X5Star","CompSites","Date","Users","Price")],cor=TRUE)
+app.pca.corr$loadings[,1] #first principle component
+
+```
+
+Part 2: Generalized Linear Models
+```{r part2}
+
+# load heart.csv into data frame
+setwd(datadir)
+heart <- read.table("heart.csv", sep = ",", header = T)
+setwd(sourcedir)
+
+# Q11, Q12
+heart.glm1.main <- glm(diag~age+as.factor(cp)+as.factor(sex), data=heart, family=binomial)
+summary(heart.glm1.main)
+
+heart.null <- glm(diag~1, data=heart, family=binomial)
+summary(heart.null)
+
+anova(heart.glm1.main, heart.null, test = "Chi")
+
+# Q13
+100*(exp(summary(heart.glm1.main)$coefficients[2])-1)
+
+# Q14
+# can only compare to the base case (typical angina)
+
+# Q15, Q16
+heart.glm2.main <- glm(diag~age+as.factor(cp)+as.factor(sex)+restbps+
+                         chol+as.factor(fbs), data=heart, family=binomial)
+summary(heart.glm2.main)
+
+anova(heart.glm1.main, heart.glm2.main, test = "Chi")
+
+# Q17, Q18
+heart.glm3.main <- glm(diag~age+as.factor(cp)+as.factor(sex)+restbps+
+                         chol+as.factor(fbs)+as.factor(restecg), data=heart, family=binomial)
+summary(heart.glm3.main)
+
+heart.step <- step(heart.glm3.main, data=heart, family=binomial)
+# diag ~ age + as.factor(cp) + as.factor(sex) + as.factor(fbs)
+
+# Q19
+heart.pred <- predict(heart.step, type="response", newdata=heart)
+score.table(heart.pred, heart$diag, 0.5)
+
+# Q20
+plot.roc(heart.pred, heart$diag, col = "blue")
+
+# Q21, Q22
+heart.pca <- princomp(heart[,c("age","restbps","chol")],cor=TRUE)
+cumplot(heart.pca)
+
+# Q23
+heart.pca.glm75 <- pc.glm(heart.pca, 75, heart$diag)
+
+heart.pca.null <- pc.null(heart.pca, 75, heart$diag)
+
+anova(heart.pca.glm75, heart.pca.null, test = "Chi")
+
+# Q24
+AIC(heart.pca.glm75)
+AIC(heart.step)
+
+# Q25
+heart.pca.pred <- predict.pc.glm(heart.pca.glm75, heart.pca, heart[,c("age","restbps","chol")])
+score.table(heart.pca.pred, heart$diag, 0.5)
+
+```
+
+Part 3: Time Series Analysis
+```{r part3}
+
+# load sunspot.csv into data frame
+setwd(datadir)
+sunspot <- read.table("sunspot.csv", sep = ",", header = T)
+setwd(sourcedir)
+
+# construct time series object
+sunspot.ts <- ts(sunspot$sunspotarea)
+
+# Q26
+pg.sunspot <- spec.pgram(sunspot.ts,demean=T,log='no')
+max.omega.sunspot <- pg.sunspot$freq[which(pg.sunspot$spec==max(pg.sunspot$spec))]
+period <- 1/max.omega.sunspot #period without spans
+period
+
+pg.sunspot <- spec.pgram(sunspot.ts,spans=12,demean=T,log='no')
+max.omega.sunspot <- pg.sunspot$freq[which(pg.sunspot$spec==max(pg.sunspot$spec))]
+period.spans <- 1/max.omega.sunspot #period with spans=12
+period.spans
+
+# Q27
+avgperiod <- (period+period.spans)/2
+
+t <- c(seq(1:dim(sunspot)[1])) #time interval
+
+sunspot.trend.season <- lm(sunspot.ts ~ t + sin(2*pi*t/avgperiod) + cos(2*pi*t/avgperiod))
+summary(sunspot.trend.season)
+
+# Q28
+e.ts.sunspot <- ts(sunspot.trend.season$residuals)
+ggAcf(e.ts.sunspot)
+
+# Q29
+ggPacf(e.ts.sunspot)
+
+# Q30
+sunspot.auto <- auto.arima(e.ts.sunspot, approximation = FALSE)
+summary(sunspot.auto)
+
+# Q31
+ggtsdiag(sunspot.auto, gof.lag=20)
+
+# There is one statistically significant spike in the ACF of the residuals up to 20 lags.	
+# According to the Ljung-Box test, the model is adequate for up to at least 20 lags.
+
+```
